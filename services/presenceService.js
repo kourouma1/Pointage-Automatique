@@ -3,6 +3,7 @@ const os = require("os");
 const moment = require("moment");
 const Employe = require("../models/employe");
 const Presence = require("../models/presence");
+const ping = require("ping");
 
 // Cache pour les employés
 let employeCache = new Map();
@@ -120,6 +121,7 @@ function pingIP(ip) {
     exec(`${pingCommand} ${ip}`, (err) => {
       resolve(!err);
     });
+    // renforcer la robustesse en pingant deux fois
   });
 }
 
