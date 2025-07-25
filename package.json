@@ -1,0 +1,23 @@
+{
+  "name": "presenceautomatique",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon serveur.js",
+    "start": "node serveur.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "moment": "^2.30.1",
+    "mongoose": "^8.16.4",
+    "node-arp": "^1.0.6",
+    "nodemon": "^3.1.10",
+    "winston": "^3.17.0"
+  }
+}
