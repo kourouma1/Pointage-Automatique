@@ -110,13 +110,14 @@ async function enregistrerPresence(mac, ip) {
   }
 }
 
-// Ping une IP
+// Ping une IP en adaptant la commande selon le système
+const pingCommand = os.platform() === "win32" ? "ping -n 2 -w 1000" : "ping -c 2 -W 1";
 function pingIP(ip) {
   return new Promise((resolve) => {
-    exec(`ping -f -c 2 -W 1 ${ip}`, (err) => {
+    exec(`${pingCommand} ${ip}`, (err) => {
       resolve(!err);
     });
-    exec(`ping ${ip}`, (err) => {
+    exec(`${pingCommand} ${ip}`, (err) => {
       resolve(!err);
     });
   });
