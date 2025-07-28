@@ -8,7 +8,11 @@ const ping = require("ping");
 // Cache pour les employés
 let employeCache = new Map();
 
-// Exécuter une commande système
+// Exécuter une commande système sur linux, macOS ou Windows
+/**
+ * @param {string} cmd - La commande à exécuter
+ * @returns {Promise<string>} - Résultat de la commande
+ */
 function runCommand(cmd) {
   return new Promise((resolve, reject) => {
     exec(cmd, (err, stdout) => {
@@ -41,7 +45,7 @@ async function clearArpTable() {
     } else if (os.platform() === "win32") {
       await runCommand("arp -d *");
     }
-    console.log("🧹 Table ARP nettoyée.");
+    //console.log("🧹 Table ARP nettoyée.");
   } catch (err) {
     console.error("❌ Erreur lors du nettoyage de la table ARP :", err.message);
   }
@@ -92,9 +96,9 @@ async function enregistrerPresence(mac, ip) {
       if (presence.heure_depart) {
         presence.heure_depart = null;
         await presence.save();
-        console.log(`🔄 ${employe.nom} reconnecté, heure de départ réinitialisée à null (IP : ${ip})`);
+        //console.log(`🔄 ${employe.nom} reconnecté, heure de départ réinitialisée à null (IP : ${ip})`);
       } else {
-        console.log(`⏳ ${employe.nom} déjà enregistré et session ouverte (IP : ${ip})`);
+        //console.log(`⏳ ${employe.nom} déjà enregistré et session ouverte (IP : ${ip})`);
       }
       return;
     }
@@ -105,7 +109,7 @@ async function enregistrerPresence(mac, ip) {
       heure_arrivee: heure,
       heure_depart: null,
     });
-    console.log(`✅ ${employe.nom} pointé à ${heure} depuis IP ${ip}`);
+    //console.log(`✅ ${employe.nom} pointé à ${heure} depuis IP ${ip}`);
   } catch (err) {
     console.error(`🚨 Erreur pour ${mac} (${ip}) :`, err.message);
   }
@@ -153,14 +157,14 @@ async function verifierToutesMACs() {
     const ip = await getIPfromMAC(mac);
 
     if (!ip) {
-      console.log(`❌ Aucune IP trouvée pour ${emp.nom} (MAC: ${mac}) - Déconnexion détectée`);
+      //console.log(`❌ Aucune IP trouvée pour ${emp.nom} (MAC: ${mac}) - Déconnexion détectée`);
       await majHeureDepart(emp._id, emp.nom, heure, today);
       continue;
     }
 
     const actif = await pingIP(ip);
     if (!actif) {
-      console.log(`❌ ${emp.nom} (${mac}) ne répond pas au ping sur IP ${ip} - Déconnexion détectée`);
+      //console.log(`❌ ${emp.nom} (${mac}) ne répond pas au ping sur IP ${ip} - Déconnexion détectée`);
       await majHeureDepart(emp._id, emp.nom, heure, today);
     } else {
       console.log(`✅ ${emp.nom} (${mac}) est actif sur IP ${ip}`);
@@ -179,9 +183,9 @@ async function majHeureDepart(employe_id, nom, heure, today) {
   if (presence) {
     presence.heure_depart = heure;
     await presence.save();
-    console.log(`🚪 Heure de départ mise à jour pour ${nom} à ${heure}`);
+    //console.log(`🚪 Heure de départ mise à jour pour ${nom} à ${heure}`);
   } else {
-    console.log(`⚠️ Aucune session ouverte trouvée pour ${nom} aujourd’hui ou heure de départ déjà définie`);
+    //console.log(`⚠️ Aucune session ouverte trouvée pour ${nom} aujourd’hui ou heure de départ déjà définie`);
   }
 }
 
@@ -191,7 +195,7 @@ async function loadEmployeCache() {
     const employes = await Employe.find({}).select("mac_address nom _id");
     employeCache.clear();
     employes.forEach((emp) => employeCache.set(emp.mac_address.toLowerCase(), emp));
-    console.log("🗄 Cache des employés mis à jour.");
+    //console.log("🗄 Cache des employés mis à jour.");
   } catch (err) {
     console.error("❌ Erreur lors du chargement du cache :", err.message);
   }
@@ -213,11 +217,11 @@ async function scanNetwork() {
       });
 
       compteur++;
-      if (compteur % 600 === 0) {
+      if (compteur % 200 === 0) {
         await clearArpTable();
-        await pingAllIps();
+        //await pingAllIps();
         compteur = 0;
-        console.log("🧹 Table ARP nettoyée après 600 itérations.");
+        //console.log("🧹 Table ARP nettoyée après 200 itérations.");
       }
     } catch (err) {
       console.error("❌ Erreur dans le scan réseau :", err.message);
