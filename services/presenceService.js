@@ -17,7 +17,7 @@ function runCommand(cmd) {
   return new Promise((resolve, reject) => {
     exec(cmd, (err, stdout) => {
       if (err) {
-        console.error(`Erreur lors de l'exécution de ${cmd}: ${err.message}`);
+        //console.error(`Erreur lors de l'exécution de ${cmd}: ${err.message}`);
         reject(err);
       } else {
         resolve(stdout);
@@ -47,7 +47,7 @@ async function clearArpTable() {
     }
     //console.log("🧹 Table ARP nettoyée.");
   } catch (err) {
-    console.error("❌ Erreur lors du nettoyage de la table ARP :", err.message);
+    //console.error("❌ Erreur lors du nettoyage de la table ARP :", err.message);
   }
 }
 
@@ -73,7 +73,7 @@ function isValidMAC(mac) {
 // Enregistrer une présence
 async function enregistrerPresence(mac, ip) {
   if (!isValidMAC(mac)) {
-    console.log(`❌ MAC invalide : ${mac} (IP : ${ip})`);
+    //console.log(`❌ MAC invalide : ${mac} (IP : ${ip})`);
     return;
   }
 
@@ -111,7 +111,7 @@ async function enregistrerPresence(mac, ip) {
     });
     //console.log(`✅ ${employe.nom} pointé à ${heure} depuis IP ${ip}`);
   } catch (err) {
-    console.error(`🚨 Erreur pour ${mac} (${ip}) :`, err.message);
+    //console.error(`🚨 Erreur pour ${mac} (${ip}) :`, err.message);
   }
 }
 
@@ -167,7 +167,7 @@ async function verifierToutesMACs() {
       //console.log(`❌ ${emp.nom} (${mac}) ne répond pas au ping sur IP ${ip} - Déconnexion détectée`);
       await majHeureDepart(emp._id, emp.nom, heure, today);
     } else {
-      console.log(`✅ ${emp.nom} (${mac}) est actif sur IP ${ip}`);
+      //console.log(`✅ ${emp.nom} (${mac}) est actif sur IP ${ip}`);
     }
   }
 }
@@ -197,7 +197,7 @@ async function loadEmployeCache() {
     employes.forEach((emp) => employeCache.set(emp.mac_address.toLowerCase(), emp));
     //console.log("🗄 Cache des employés mis à jour.");
   } catch (err) {
-    console.error("❌ Erreur lors du chargement du cache :", err.message);
+    //console.error("❌ Erreur lors du chargement du cache :", err.message);
   }
 }
 
@@ -224,7 +224,7 @@ async function scanNetwork() {
         //console.log("🧹 Table ARP nettoyée après 200 itérations.");
       }
     } catch (err) {
-      console.error("❌ Erreur dans le scan réseau :", err.message);
+      //console.error("❌ Erreur dans le scan réseau :", err.message);
     }
   }, 5000);
 }
